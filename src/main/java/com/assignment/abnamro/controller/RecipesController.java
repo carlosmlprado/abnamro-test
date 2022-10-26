@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/recipes")
 @RestController
 @Slf4j
-public class FavRecipesController {
+public class RecipesController {
 
     private RecipesService recipesService;
 
