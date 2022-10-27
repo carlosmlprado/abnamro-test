@@ -1,10 +1,13 @@
 package com.assignment.abnamro.exceptions;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Configuration;
+import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Configuration
+@ResponseStatus(HttpStatus.NOT_FOUND)
 @AllArgsConstructor
+@NoArgsConstructor
 public class RecipesExceptions extends RuntimeException {
 
     private String message;

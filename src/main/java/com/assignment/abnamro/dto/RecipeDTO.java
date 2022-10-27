@@ -1,6 +1,6 @@
 package com.assignment.abnamro.dto;
 
-import com.assignment.abnamro.entity.RecipesEntity;
+import com.assignment.abnamro.entity.RecipeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 public class RecipeDTO implements Serializable {
 
+    private Long id;
     private String recipeName;
     private Integer servingsNumber;
     private List<IngredientsDTO> ingredients;
     private String instructions;
 
-    public RecipeDTO toDTO(RecipesEntity recipeEntity) {
+    public RecipeDTO toDTO(RecipeEntity recipeEntity) {
 
         return this.builder().
                 recipeName(recipeEntity.getRecipeName()).

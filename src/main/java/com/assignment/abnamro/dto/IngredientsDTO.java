@@ -10,5 +10,6 @@ public class IngredientsDTO implements Serializable {
     private String ingredientName;
     private Integer quantity;
     private IngredientMeasurements ingredientMeasurements;
+    private Long recipeId;
 
 }

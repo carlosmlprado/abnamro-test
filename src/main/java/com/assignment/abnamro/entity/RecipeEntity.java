@@ -1,5 +1,6 @@
 package com.assignment.abnamro.entity;
 
+import com.assignment.abnamro.dto.RecipeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipesEntity {
+public class RecipeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +29,14 @@ public class RecipesEntity {
 
     @Column(name = "instructions", length = 5000)
     private String instructions;
+
+
+    public RecipeEntity toEntity(RecipeDTO recipeDTO) {
+
+        return this.builder().
+                recipeName(recipeDTO.getRecipeName()).
+                servingsNumber(recipeDTO.getServingsNumber()).
+                instructions(recipeDTO.getInstructions()).build();
+    }
 
 }
