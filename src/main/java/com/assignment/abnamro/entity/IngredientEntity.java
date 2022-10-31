@@ -1,6 +1,6 @@
 package com.assignment.abnamro.entity;
 
-import com.assignment.abnamro.dto.IngredientsDTO;
+import com.assignment.abnamro.dto.IngredientDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,12 +34,13 @@ public class IngredientEntity {
     @JoinColumn(name = "recipe_id")
     private RecipeEntity recipe;
 
-    public IngredientEntity toEntity(IngredientsDTO ingredientsDTO){
+    public IngredientEntity toEntity(IngredientDTO ingredientDTO){
 
         return this.builder().
-                ingredientName(ingredientsDTO.getIngredientName()).
-                quantity(ingredientsDTO.getQuantity()).
-                ingredientMeasurement(ingredientsDTO.getIngredientMeasurements().toString().toUpperCase()).
+                id(ingredientDTO.getId()).
+                ingredientName(ingredientDTO.getIngredientName()).
+                quantity(ingredientDTO.getQuantity()).
+                ingredientMeasurement(ingredientDTO.getIngredientMeasurements().toString().toUpperCase()).
                 build();
     }
 
