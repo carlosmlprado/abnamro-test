@@ -36,11 +36,11 @@ public class RecipeController {
     @GetMapping("/filter")
     @ApiOperation(value = "Get recipes by given filters")
     public ResponseEntity<List<RecipeDTO>> getRecipeByFilter(@RequestParam(required = false) String typeOfDiet,
-                                                             @RequestParam(required = false) Integer numberOfServings,
+                                                             @RequestParam(required = false) Integer servingsNumber,
                                                              @RequestParam(required = false) List<String> includedIngredient,
                                                              @RequestParam(required = false) List<String> excludedIngredient,
                                                              @RequestParam(required = false) String textSearch) {
-        RecipeFilterDTO recipeFilterDTO = RecipeFilterDTO.toDTO(typeOfDiet, numberOfServings, includedIngredient, excludedIngredient, textSearch);
+        RecipeFilterDTO recipeFilterDTO = RecipeFilterDTO.toDTO(typeOfDiet, servingsNumber, includedIngredient, excludedIngredient, textSearch);
 
         return ResponseEntity.ok(recipesService.getFilteredRecipes(recipeFilterDTO));
     }

@@ -82,8 +82,6 @@ public class RecipeServiceTest {
         var recipe = recipeHelper.createMockRecipe();
         when(recipeRepository.findById(10L)).thenReturn(Optional.of(recipe));
         when(ingredientRepository.saveAll(ingredientHelper.createIngredientMockList())).thenReturn(ingredientHelper.createIngredientMockList());
-        when(ingredientService.relateIngredientsForRecipe(ingredientHelper.createIngredientMockListDTO(), recipe)).thenReturn(recipe);
-
         var recipeDTO = new RecipeDTO();
         recipeDTO.setRecipeId(recipe.getRecipeId());
 

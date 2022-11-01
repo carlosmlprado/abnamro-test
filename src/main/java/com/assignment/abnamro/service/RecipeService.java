@@ -2,6 +2,7 @@ package com.assignment.abnamro.service;
 
 import com.assignment.abnamro.dto.RecipeDTO;
 import com.assignment.abnamro.dto.RecipeFilterDTO;
+import com.assignment.abnamro.entity.IngredientEntity;
 import com.assignment.abnamro.entity.RecipeEntity;
 import com.assignment.abnamro.exceptions.RecipesExceptions;
 import com.assignment.abnamro.repository.IngredientRepository;
@@ -17,7 +18,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,7 +88,30 @@ public class RecipeService {
 
         var listRecipe = page.getContent().stream().map(recipeDTO::toDTO).collect(Collectors.toList());
 
+        log.info("check if contains excluded ingredient in the recipe");
+        if (!page.getContent().isEmpty() && recipeFilterDTO.getExcludedIngredient() != null) {
+
+            checkRecipesWithoutExcludedIngredients(listRecipe, recipeFilterDTO.getExcludedIngredient());
+        }
+
+        log.debug("Return list after filtering: {}", listRecipe);
         return listRecipe;
+    }
+
+    private void checkRecipesWithoutExcludedIngredients(List<RecipeDTO> recipeDTOS, List<String> excludedIngredients) {
+
+        Set<Long> listWithRecipeIds = recipeDTOS.stream().map(RecipeDTO::getRecipeId).collect(Collectors.toSet());
+
+        for (Long i : listWithRecipeIds) {
+            List<IngredientEntity> list = ingredientRepository.getIngredientByNameAndRecipeId(i, excludedIngredients);
+
+            if (list.size() > 0) {
+                Predicate<RecipeDTO> predicate = r -> Objects.equals(r.getRecipeId(), i);
+                recipeDTOS.removeIf(predicate);
+            }
+
+        }
+
     }
 
 }

@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public enum RecipeType {
 
-    OMNIVOROUS("omnivorous"),
-    VEGETARIAN("vegetarian"),
-    VEGAN("vegan");
+    OMNIVOROUS("OMNIVOROUS"),
+    VEGETARIAN("VEGETARIAN"),
+    VEGAN("VEGAN");
 
     private final String recipeType;
 }

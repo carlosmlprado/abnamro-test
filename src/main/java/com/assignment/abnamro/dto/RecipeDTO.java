@@ -1,6 +1,7 @@
 package com.assignment.abnamro.dto;
 
 import com.assignment.abnamro.entity.RecipeEntity;
+import com.assignment.abnamro.enums.RecipeType;
 import lombok.*;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class RecipeDTO implements Serializable {
 
     private Long recipeId;
     private String recipeName;
+    private RecipeType typeOfDiet;
     private Integer servingsNumber;
     private List<IngredientDTO> ingredients;
     private String instructions;
@@ -26,7 +28,8 @@ public class RecipeDTO implements Serializable {
                 recipeId(recipeEntity.getRecipeId()).
                 recipeName(recipeEntity.getRecipeName()).
                 servingsNumber(recipeEntity.getServingsNumber()).
-                ingredients(recipeEntity.getIngredients() != null ?recipeEntity.getIngredients().stream().map(ingredientDTO::toDTO).collect(Collectors.toList()) : null).
-                instructions(recipeEntity.getInstructions()).build();
+                ingredients(recipeEntity.getIngredients() != null ? recipeEntity.getIngredients().stream().map(ingredientDTO::toDTO).collect(Collectors.toList()) : null).
+                instructions(recipeEntity.getInstructions()).
+                typeOfDiet(RecipeType.valueOf(recipeEntity.getTypeOfDiet())).build();
     }
 }

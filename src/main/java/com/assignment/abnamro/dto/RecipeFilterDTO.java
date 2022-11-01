@@ -15,7 +15,7 @@ import java.util.List;
 public class RecipeFilterDTO implements Serializable {
 
     private String typeOfDiet;
-    private Integer numberOfServings;
+    private Integer servingsNumber;
     private List<String> includedIngredient;
     private List<String> excludedIngredient;
     private String instructionsSearch;
@@ -25,10 +25,10 @@ public class RecipeFilterDTO implements Serializable {
                                    String textSearch) {
 
         return RecipeFilterDTO.builder().
-                typeOfDiet(typeOfDiet).
-                numberOfServings(numberOfServings).
+                typeOfDiet(null != typeOfDiet ? typeOfDiet.toUpperCase() : null).
+                servingsNumber(numberOfServings).
                 includedIngredient(includedIngredients).
                 excludedIngredient(excludedIngredients).
-                instructionsSearch(textSearch).build();
+                instructionsSearch(null != textSearch.toLowerCase() ? textSearch.toLowerCase() : null).build();
     }
 }

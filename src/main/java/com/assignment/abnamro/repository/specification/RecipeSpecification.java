@@ -29,25 +29,27 @@ public class RecipeSpecification {
                 }
                 if (recipeFilterDTO.getInstructionsSearch() != null) {
 
-                    predicates.add(builder.like(root.get("instructions"), recipeFilterDTO.getInstructionsSearch()));
+                    predicates.add(builder.like(root.get("instructions"), "%" + recipeFilterDTO.getInstructionsSearch() + "%"));
                 }
 
-                Join<IngredientEntity, RecipeEntity> ingredient = root.join("recipe");
+                if (recipeFilterDTO.getTypeOfDiet() != null) {
+
+                    predicates.add(builder.like(root.get("typeOfDiet"), recipeFilterDTO.getTypeOfDiet()));
+                }
+
+                Join<RecipeEntity, IngredientEntity> ingredient = root.join("ingredients");
 
                 if (recipeFilterDTO.getIncludedIngredient() != null) {
 
-                    predicates.add(builder.equal(ingredient.get("ingredientName"), recipeFilterDTO.getIncludedIngredient()));
+                    predicates.add(ingredient.get("ingredientName").in(recipeFilterDTO.getIncludedIngredient()));
                 }
 
-                if (recipeFilterDTO.getExcludedIngredient() != null) {
+                if (recipeFilterDTO.getServingsNumber() != null) {
 
-                    predicates.add(builder.notEqual(ingredient.get("ingredientName"), recipeFilterDTO.getExcludedIngredient()));
+                    predicates.add(builder.equal(root.get("servingsNumber"), recipeFilterDTO.getServingsNumber()));
                 }
 
-                if (recipeFilterDTO.getNumberOfServings() != null) {
-
-                    predicates.add(builder.equal(ingredient.get("numberOfServings"), recipeFilterDTO.getNumberOfServings()));
-                }
+                query.distinct(true);
 
             }
             return builder.and(predicates.toArray(new Predicate[]{}));
