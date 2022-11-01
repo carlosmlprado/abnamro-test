@@ -17,7 +17,7 @@ public class RecipeHelper {
                 recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
-                instructions("Dummy instruction").build();
+                instructions("Dummy instruction cook").build();
 
         recipeListDTO.add(recipe1);
 
@@ -74,7 +74,7 @@ public class RecipeHelper {
 
         var recipe1 = new RecipeEntity();
         recipe1 = recipe1.builder().
-                recipeId(10L).
+                recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction").build();

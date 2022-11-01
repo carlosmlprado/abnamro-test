@@ -41,7 +41,6 @@ public class RecipeService {
 
     @Transactional(readOnly = true)
     public RecipeDTO getRecipeById(Long recipeId) {
-
         var recipeDTO = new RecipeDTO();
         var recipeEntity = checkIfRecipeExists(recipeId);
         return recipeDTO.toDTO(recipeEntity);

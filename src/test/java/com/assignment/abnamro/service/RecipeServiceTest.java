@@ -30,9 +30,6 @@ public class RecipeServiceTest {
     @InjectMocks
     private RecipeService recipeService;
 
-    @InjectMocks
-    private IngredientService ingredientService;
-
     @Test
     public void when_get_all_recipes_then_return_all_recipes_with_no_error() {
         var recipeHelper = new RecipeHelper();
