@@ -18,8 +18,8 @@ public class IngredientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "ingredient_id")
+    private Long ingredientId;
 
     @Column(name = "ingredient_name")
     private String ingredientName;
@@ -34,13 +34,14 @@ public class IngredientEntity {
     @JoinColumn(name = "recipe_id")
     private RecipeEntity recipe;
 
-    public IngredientEntity toEntity(IngredientDTO ingredientDTO){
+    public IngredientEntity toEntity(IngredientDTO ingredientDTO, RecipeEntity recipeEntity){
 
-        return this.builder().
-                id(ingredientDTO.getId()).
+        return IngredientEntity.builder().
+                ingredientId(ingredientDTO.getId()).
                 ingredientName(ingredientDTO.getIngredientName()).
                 quantity(ingredientDTO.getQuantity()).
-                ingredientMeasurement(ingredientDTO.getIngredientMeasurements().toString().toUpperCase()).
+                ingredientMeasurement(null != ingredientDTO.getIngredientMeasurements() ? ingredientDTO.getIngredientMeasurements().toUpperCase() : null).
+                recipe(recipeEntity).
                 build();
     }
 

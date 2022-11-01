@@ -1,7 +1,6 @@
 package com.assignment.abnamro.dto;
 
 import com.assignment.abnamro.entity.IngredientEntity;
-import com.assignment.abnamro.enums.IngredientMeasurements;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,11 +23,11 @@ public class IngredientDTO implements Serializable {
     public IngredientDTO toDTO(IngredientEntity ingredientEntity) {
 
         return IngredientDTO.builder().
-                id(ingredientEntity.getId()).
+                id(ingredientEntity.getIngredientId() != null ? ingredientEntity.getIngredientId() : null).
                 ingredientName(ingredientEntity.getIngredientName()).
                 quantity(ingredientEntity.getQuantity()).
                 ingredientMeasurements(ingredientEntity.getIngredientMeasurement()).
-                recipeId(ingredientEntity.getRecipe().getId()).build();
+                recipeId(ingredientEntity.getRecipe().getRecipeId()).build();
 
     }
 

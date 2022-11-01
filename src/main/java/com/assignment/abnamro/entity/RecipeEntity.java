@@ -1,6 +1,5 @@
 package com.assignment.abnamro.entity;
 
-import com.assignment.abnamro.dto.IngredientDTO;
 import com.assignment.abnamro.dto.RecipeDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "recipes")
+@Table(name = "recipe")
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,8 +20,8 @@ public class RecipeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "recipe_id")
+    private Long recipeId;
 
     @Column(name = "recipe_name")
     private String recipeName;
@@ -39,12 +38,11 @@ public class RecipeEntity {
 
     public RecipeEntity toEntity(RecipeDTO recipeDTO) {
 
-        var ingredientsDTO = new IngredientDTO();
-        return this.builder().
+        return RecipeEntity.builder().
                 recipeName(recipeDTO.getRecipeName()).
                 servingsNumber(recipeDTO.getServingsNumber()).
                 instructions(recipeDTO.getInstructions()).
-                ingredients(recipeDTO.getIngredients(ingredientsDTO.toDTO(recipeDTO))).
+                recipeId(recipeDTO.getRecipeId()).
                 build();
     }
 

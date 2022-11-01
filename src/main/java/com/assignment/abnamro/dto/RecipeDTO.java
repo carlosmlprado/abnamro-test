@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RecipeDTO implements Serializable {
 
-    private Long id;
+    private Long recipeId;
     private String recipeName;
     private Integer servingsNumber;
     private List<IngredientDTO> ingredients;
@@ -20,10 +21,12 @@ public class RecipeDTO implements Serializable {
 
     public RecipeDTO toDTO(RecipeEntity recipeEntity) {
 
+        var ingredientDTO = new IngredientDTO();
         return RecipeDTO.builder().
-                id(recipeEntity.getId()).
+                recipeId(recipeEntity.getRecipeId()).
                 recipeName(recipeEntity.getRecipeName()).
                 servingsNumber(recipeEntity.getServingsNumber()).
+                ingredients(recipeEntity.getIngredients() != null ?recipeEntity.getIngredients().stream().map(ingredientDTO::toDTO).collect(Collectors.toList()) : null).
                 instructions(recipeEntity.getInstructions()).build();
     }
 }

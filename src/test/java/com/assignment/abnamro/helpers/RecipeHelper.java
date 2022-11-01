@@ -14,7 +14,7 @@ public class RecipeHelper {
 
         var recipe1 = new RecipeDTO();
         recipe1 = recipe1.builder().
-                id(1L).
+                recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction").build();
@@ -23,7 +23,7 @@ public class RecipeHelper {
 
         var recipe2 = new RecipeDTO();
         recipe2 = recipe1.builder().
-                id(2L).
+                recipeId(2L).
                 recipeName("Vegan Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction but take off all the meat").build();
@@ -37,7 +37,7 @@ public class RecipeHelper {
 
         var recipe1 = new RecipeDTO();
         recipe1 = recipe1.builder().
-                id(1L).
+                recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction").build();
@@ -51,7 +51,7 @@ public class RecipeHelper {
 
         var recipe1 = new RecipeEntity();
         recipe1 = recipe1.builder().
-                id(1L).
+                recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction").build();
@@ -60,7 +60,7 @@ public class RecipeHelper {
 
         var recipe2 = new RecipeEntity();
         recipe2 = recipe1.builder().
-                id(2L).
+                recipeId(2L).
                 recipeName("Vegan Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction but take off all the meat").build();
@@ -74,7 +74,7 @@ public class RecipeHelper {
 
         var recipe1 = new RecipeEntity();
         recipe1 = recipe1.builder().
-                id(1L).
+                recipeId(10L).
                 recipeName("Feijoada").
                 servingsNumber(10).
                 instructions("Dummy instruction").build();

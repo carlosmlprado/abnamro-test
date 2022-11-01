@@ -4,6 +4,7 @@ import com.assignment.abnamro.dto.RecipeFilterDTO;
 import com.assignment.abnamro.entity.IngredientEntity;
 import com.assignment.abnamro.entity.RecipeEntity;
 import lombok.Data;
+import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@UtilityClass
 public class RecipeSpecification {
 
     public static Specification<RecipeEntity> getFilteredRecipes(RecipeFilterDTO recipeFilterDTO) {
@@ -21,23 +23,23 @@ public class RecipeSpecification {
 
             if (recipeFilterDTO != null) {
 
-                if (!recipeFilterDTO.getTypeOfDiet().isEmpty()) {
+                if (recipeFilterDTO.getTypeOfDiet() != null) {
 
                     predicates.add(builder.equal(root.get("typeOfDiet"), recipeFilterDTO.getTypeOfDiet()));
                 }
-                if (!recipeFilterDTO.getInstructionsSearch().isEmpty()) {
+                if (recipeFilterDTO.getInstructionsSearch() != null) {
 
                     predicates.add(builder.like(root.get("instructions"), recipeFilterDTO.getInstructionsSearch()));
                 }
 
-                Join<RecipeEntity, IngredientEntity> ingredient = root.join("recipe");
+                Join<IngredientEntity, RecipeEntity> ingredient = root.join("recipe");
 
-                if (recipeFilterDTO.getIncludedIngredient().size() > 0) {
+                if (recipeFilterDTO.getIncludedIngredient() != null) {
 
                     predicates.add(builder.equal(ingredient.get("ingredientName"), recipeFilterDTO.getIncludedIngredient()));
                 }
 
-                if (recipeFilterDTO.getExcludedIngredient().size() > 0) {
+                if (recipeFilterDTO.getExcludedIngredient() != null) {
 
                     predicates.add(builder.notEqual(ingredient.get("ingredientName"), recipeFilterDTO.getExcludedIngredient()));
                 }

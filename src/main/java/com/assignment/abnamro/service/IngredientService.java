@@ -18,17 +18,19 @@ public class IngredientService {
 
     private IngredientRepository ingredientRepository;
 
-    public void relateIngredientsForRecipe(List<IngredientDTO> ingredientsDTO, RecipeEntity recipeEntity){
+    public RecipeEntity relateIngredientsForRecipe(List<IngredientDTO> ingredientsDTO, RecipeEntity recipeEntity){
 
-        log.info("Create ingredients and relate to the recipe");
-        var ingredientsEntity = new ArrayList<IngredientEntity>();
+        log.info("Create ingredients and relate them to the recipe");
+        List<IngredientEntity> ingredientsEntity = new ArrayList<>();
 
         for(IngredientDTO i: ingredientsDTO){
             var ingredient = new IngredientEntity();
-            ingredient.setRecipe(recipeEntity);
-            ingredientsEntity.add(ingredient.toEntity(i));
+            ingredientsEntity.add(ingredient.toEntity(i, recipeEntity));
         }
 
-        ingredientRepository.saveAll(ingredientsEntity);
+        ingredientsEntity = ingredientRepository.saveAll(ingredientsEntity);
+
+        recipeEntity.setIngredients(ingredientsEntity);
+        return recipeEntity;
     }
 }

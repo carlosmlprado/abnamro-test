@@ -20,14 +20,15 @@ public class RecipeFilterDTO implements Serializable {
     private List<String> excludedIngredient;
     private String instructionsSearch;
 
-    public RecipeFilterDTO builder(String typeOfDiet, Integer numberOfServings,
-                                   List<String> includedIngredient, List<String> excludedIngredient, String textSearch) {
+    public static RecipeFilterDTO toDTO(String typeOfDiet, Integer numberOfServings,
+                                   List<String> includedIngredients, List<String> excludedIngredients,
+                                   String textSearch) {
 
         return RecipeFilterDTO.builder().
                 typeOfDiet(typeOfDiet).
                 numberOfServings(numberOfServings).
-                includedIngredient(includedIngredient).
-                excludedIngredient(excludedIngredient)
-                .instructionsSearch(textSearch).build();
+                includedIngredient(includedIngredients).
+                excludedIngredient(excludedIngredients).
+                instructionsSearch(textSearch).build();
     }
 }

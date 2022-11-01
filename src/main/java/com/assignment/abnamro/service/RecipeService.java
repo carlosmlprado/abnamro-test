@@ -2,9 +2,9 @@ package com.assignment.abnamro.service;
 
 import com.assignment.abnamro.dto.RecipeDTO;
 import com.assignment.abnamro.dto.RecipeFilterDTO;
-import com.assignment.abnamro.dto.model.Recipe;
 import com.assignment.abnamro.entity.RecipeEntity;
 import com.assignment.abnamro.exceptions.RecipesExceptions;
+import com.assignment.abnamro.repository.IngredientRepository;
 import com.assignment.abnamro.repository.RecipeRepository;
 import com.assignment.abnamro.repository.specification.RecipeSpecification;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,14 +28,13 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
 
+    private final IngredientRepository ingredientRepository;
+
     @Transactional(readOnly = true)
     public List<RecipeDTO> getAllRecipes() {
 
         var recipeDTO = new RecipeDTO();
-        List<RecipeDTO> recipeList = new ArrayList<RecipeDTO>();
-        List<Recipe> list = recipeRepository.getRecipesAndIngredients();
-
-        return null;
+        return recipeRepository.findAll().stream().map(recipeDTO::toDTO).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -53,11 +51,11 @@ public class RecipeService {
 
         log.info("Check if is update to see If the recipeId exists");
         if (isUpdate)
-            recipeEntity = checkIfRecipeExists(recipeDTO.getId());
+            recipeEntity = checkIfRecipeExists(recipeDTO.getRecipeId());
 
         recipeEntity = recipeRepository.save(recipeEntity.toEntity(recipeDTO));
 
-        ingredientService.relateIngredientsForRecipe(recipeDTO.getIngredients(), recipeEntity);
+        recipeEntity = ingredientService.relateIngredientsForRecipe(recipeDTO.getIngredients(), recipeEntity);
 
         return recipeDTO.toDTO(recipeEntity);
     }
@@ -65,6 +63,8 @@ public class RecipeService {
     @Transactional
     public void deleteRecipe(Long recipeId) {
         var recipeEntity = checkIfRecipeExists(recipeId);
+        log.info("Delete ingredients first then recipe");
+        ingredientRepository.deleteIngredientByRecipeId(recipeId);
         recipeRepository.delete(recipeEntity);
     }
 
