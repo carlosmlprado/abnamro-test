@@ -1,22 +1,27 @@
 package com.assignment.abnamro.service;
 
 import com.assignment.abnamro.dto.RecipeDTO;
+import com.assignment.abnamro.dto.RecipeFilterDTO;
+import com.assignment.abnamro.entity.RecipeEntity;
 import com.assignment.abnamro.exceptions.RecipesExceptions;
 import com.assignment.abnamro.helpers.IngredientHelper;
 import com.assignment.abnamro.helpers.RecipeHelper;
 import com.assignment.abnamro.repository.IngredientRepository;
 import com.assignment.abnamro.repository.RecipeRepository;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.junit.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeServiceTest {
@@ -29,6 +34,12 @@ public class RecipeServiceTest {
 
     @InjectMocks
     private RecipeService recipeService;
+
+    @InjectMocks
+    private IngredientService ingredientService;
+
+    @Captor
+    private ArgumentCaptor<RecipeEntity> recipeEntityArgumentCaptor;
 
     @Test
     public void when_get_all_recipes_then_return_all_recipes_with_no_error() {
@@ -79,18 +90,25 @@ public class RecipeServiceTest {
         var recipe = recipeHelper.createMockRecipe();
         when(recipeRepository.findById(10L)).thenReturn(Optional.of(recipe));
         when(ingredientRepository.saveAll(ingredientHelper.createIngredientMockList())).thenReturn(ingredientHelper.createIngredientMockList());
+
         var recipeDTO = new RecipeDTO();
         recipeDTO.setRecipeId(recipe.getRecipeId());
 
         recipeDTO.setRecipeName("new recipe name");
         recipeDTO.setInstructions("new instructions");
 
-        recipeService.createUpdateRecipe(recipeDTO, true);
+        recipeDTO = recipeService.updateRecipe(recipeDTO, 10L);
 
-        assertNotEquals(recipe.getRecipeName(), "new recipe name");
-        assertNotEquals(recipe.getInstructions(), "new instructions");
+        verify(recipeRepository, times(1)).save(recipeEntityArgumentCaptor.capture());
+
+        RecipeEntity recipeEntity = recipeEntityArgumentCaptor.getValue();
+
+        assertEquals(recipeEntity.getRecipeName(), recipeDTO.getRecipeName());
+        assertEquals(recipeEntity.getInstructions(), recipeDTO.getInstructions());
 
     }
+
+
 
     @Test
     public void when_delete_non_existing_recipeId_then_return_not_found_exception() {
@@ -98,6 +116,27 @@ public class RecipeServiceTest {
         assertThrows(RecipesExceptions.class, () -> {
             recipeService.deleteRecipe(9L);
         });
+    }
+
+    @Test
+    public void when_get_all_recipes_with_filter_then_return_all_recipes_filtered_with_no_error() {
+        var recipeFilterDTO = new RecipeFilterDTO();
+        List<String> excludedIngredient = Arrays.asList("ketchup");
+        recipeFilterDTO.setExcludedIngredient(excludedIngredient);
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+        var ingredientHelper = new IngredientHelper();
+        when(recipeRepository.findAll(ArgumentMatchers.<Specification<RecipeEntity>>any(), eq(pageable))).thenReturn(createPage());
+        when(ingredientRepository.getIngredientByNameAndRecipeId(1L,excludedIngredient)).thenReturn(Arrays.asList(ingredientHelper.createIngredientMock()));
+
+        List<RecipeDTO> recipeListDTO = recipeService.getFilteredRecipes(recipeFilterDTO);
+
+        assertEquals(recipeListDTO.size(), 1);
+    }
+
+    private Page<RecipeEntity> createPage(){
+        var recipeHelper = new RecipeHelper();
+        List<RecipeEntity> recipeEntities = recipeHelper.createMockRecipeListEntity();
+        return new PageImpl<>(recipeEntities);
     }
 
 }

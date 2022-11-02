@@ -48,14 +48,15 @@ public class RecipeController {
     @PostMapping
     @ApiOperation(value = "Create recipe")
     public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeDTO recipeDTO) {
-        var recipe = recipesService.createUpdateRecipe(recipeDTO, false);
+        var recipe = recipesService.createRecipe(recipeDTO);
         return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/{recipeId}")
     @ApiOperation(value = "Update recipe")
-    public ResponseEntity<RecipeDTO> updateRecipe(@RequestBody RecipeDTO recipeDTO) {
-        var recipe = recipesService.createUpdateRecipe(recipeDTO, true);
+    public ResponseEntity<RecipeDTO> updateRecipe(@RequestBody RecipeDTO recipeDTO,
+                                                  @NonNull @PathVariable Long recipeId) {
+        var recipe = recipesService.updateRecipe(recipeDTO, recipeId);
         return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 

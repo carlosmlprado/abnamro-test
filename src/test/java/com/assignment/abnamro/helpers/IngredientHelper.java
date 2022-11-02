@@ -2,6 +2,7 @@ package com.assignment.abnamro.helpers;
 
 import com.assignment.abnamro.dto.IngredientDTO;
 import com.assignment.abnamro.entity.IngredientEntity;
+import com.assignment.abnamro.entity.RecipeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,17 @@ public class IngredientHelper {
         list.add(ingredient2);
 
         return list;
+    }
+
+    public IngredientEntity createIngredientMock(){
+
+        var recipeEntity = new RecipeEntity();
+        recipeEntity.setRecipeId(1L);
+        IngredientEntity ingredient = new IngredientEntity();
+        ingredient.setIngredientId(10L);
+        ingredient.setRecipe(recipeEntity);
+
+        return ingredient;
     }
 
     public List<IngredientDTO> createIngredientMockListDTO(){

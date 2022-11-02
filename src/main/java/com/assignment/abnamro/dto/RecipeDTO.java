@@ -30,6 +30,6 @@ public class RecipeDTO implements Serializable {
                 servingsNumber(recipeEntity.getServingsNumber()).
                 ingredients(recipeEntity.getIngredients() != null ? recipeEntity.getIngredients().stream().map(ingredientDTO::toDTO).collect(Collectors.toList()) : null).
                 instructions(recipeEntity.getInstructions()).
-                typeOfDiet(RecipeType.valueOf(recipeEntity.getTypeOfDiet())).build();
+                typeOfDiet(null != recipeEntity.getTypeOfDiet() ? RecipeType.valueOf(recipeEntity.getTypeOfDiet()) : null).build();
     }
 }

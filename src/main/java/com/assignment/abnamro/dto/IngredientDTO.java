@@ -27,7 +27,7 @@ public class IngredientDTO implements Serializable {
                 ingredientName(ingredientEntity.getIngredientName()).
                 quantity(ingredientEntity.getQuantity()).
                 ingredientMeasurements(ingredientEntity.getIngredientMeasurement()).
-                recipeId(ingredientEntity.getRecipe().getRecipeId()).build();
+                recipeId(null != ingredientEntity.getRecipe() ? ingredientEntity.getRecipe().getRecipeId() : null).build();
 
     }
 

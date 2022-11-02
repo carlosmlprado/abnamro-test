@@ -47,7 +47,7 @@ public class RecipeEntity {
                 servingsNumber(recipeDTO.getServingsNumber()).
                 instructions(recipeDTO.getInstructions().toLowerCase()).
                 recipeId(recipeDTO.getRecipeId()).
-                typeOfDiet(recipeDTO.getTypeOfDiet().getRecipeType()).
+                typeOfDiet(null != recipeDTO.getTypeOfDiet() ? recipeDTO.getTypeOfDiet().getRecipeType() : null).
                 build();
     }
 

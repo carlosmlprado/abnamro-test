@@ -1,5 +1,6 @@
 package com.assignment.abnamro.service;
 
+import com.assignment.abnamro.dto.IngredientDTO;
 import com.assignment.abnamro.dto.RecipeDTO;
 import com.assignment.abnamro.dto.RecipeFilterDTO;
 import com.assignment.abnamro.entity.IngredientEntity;
@@ -47,16 +48,27 @@ public class RecipeService {
     }
 
     @Transactional
-    public RecipeDTO createUpdateRecipe(RecipeDTO recipeDTO, Boolean isUpdate) {
+    public RecipeDTO updateRecipe(RecipeDTO recipeDTO, Long recipeId) {
         var recipeEntity = new RecipeEntity();
 
-        log.info("Check if is update to see If the recipeId exists");
-        if (isUpdate)
-            recipeEntity = checkIfRecipeExists(recipeDTO.getRecipeId());
+        log.info("Check if the recipeId exists");
+        recipeEntity = checkIfRecipeExists(recipeId);
+        recipeDTO.setRecipeId(recipeId);
 
         recipeEntity = recipeRepository.save(recipeEntity.toEntity(recipeDTO));
 
-        recipeEntity = ingredientService.relateIngredientsForRecipe(recipeDTO.getIngredients(), recipeEntity);
+        recipeEntity = relateIngredientsForRecipe(recipeDTO.getIngredients(), recipeEntity);
+
+        return recipeDTO.toDTO(recipeEntity);
+    }
+
+    @Transactional
+    public RecipeDTO createRecipe(RecipeDTO recipeDTO) {
+        var recipeEntity = new RecipeEntity();
+
+        recipeEntity = recipeRepository.save(recipeEntity.toEntity(recipeDTO));
+
+        recipeEntity = relateIngredientsForRecipe(recipeDTO.getIngredients(), recipeEntity);
 
         return recipeDTO.toDTO(recipeEntity);
     }
@@ -113,4 +125,8 @@ public class RecipeService {
 
     }
 
+    private RecipeEntity relateIngredientsForRecipe(List<IngredientDTO> ingredients, RecipeEntity recipeEntity) {
+
+        return ingredientService.relateIngredientsForRecipe(ingredients, recipeEntity);
+    }
 }

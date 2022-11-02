@@ -48,7 +48,7 @@ class RecipeControllerTest {
     @Test
     void when_creating_recipe_then_should_return_created_recipe() throws Exception {
         var recipeHelper = new RecipeHelper();
-        when(recipeService.createUpdateRecipe(recipeHelper.createMockRecipeDTO(), false)).thenReturn(recipeHelper.createMockRecipeDTO());
+        when(recipeService.createRecipe(recipeHelper.createMockRecipeDTO())).thenReturn(recipeHelper.createMockRecipeDTO());
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
@@ -66,7 +66,7 @@ class RecipeControllerTest {
     void when_updating_recipe_then_should_return_updated_recipe() throws Exception {
         var recipeHelper = new RecipeHelper();
         var recipeDTO = recipeHelper.createMockRecipeDTO();
-        when(recipeService.createUpdateRecipe(recipeHelper.createMockRecipeDTO(), true)).thenReturn(recipeDTO);
+        when(recipeService.updateRecipe(recipeHelper.createMockRecipeDTO(), 1L)).thenReturn(recipeDTO);
 
         recipeDTO.setRecipeName("new recipe name");
         recipeDTO.setInstructions("new instructions");
@@ -74,7 +74,7 @@ class RecipeControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
 
-        mockMvc.perform(MockMvcRequestBuilders.put(BASE_URL)
+        mockMvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1")
                         .content(jsonContent)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)).

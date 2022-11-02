@@ -1,9 +1,11 @@
 package com.assignment.abnamro.helpers;
 
 import com.assignment.abnamro.dto.RecipeDTO;
+import com.assignment.abnamro.entity.IngredientEntity;
 import com.assignment.abnamro.entity.RecipeEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RecipeHelper {
@@ -48,13 +50,16 @@ public class RecipeHelper {
     public List<RecipeEntity> createMockRecipeListEntity() {
 
         var recipeListEntity = new ArrayList<RecipeEntity>();
+        var ingredientHelper = new IngredientHelper();
 
         var recipe1 = new RecipeEntity();
         recipe1 = recipe1.builder().
                 recipeId(1L).
                 recipeName("Feijoada").
                 servingsNumber(10).
-                instructions("Dummy instruction").build();
+                instructions("instruction").
+                ingredients(ingredientHelper.createIngredientMockList())
+                .build();
 
         recipeListEntity.add(recipe1);
 
@@ -63,7 +68,7 @@ public class RecipeHelper {
                 recipeId(2L).
                 recipeName("Vegan Feijoada").
                 servingsNumber(10).
-                instructions("Dummy instruction but take off all the meat").build();
+                instructions("dummy instruction but take off all the meat").build();
 
         recipeListEntity.add(recipe2);
 
