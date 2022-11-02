@@ -38,8 +38,8 @@ public class IngredientEntity {
 
         return IngredientEntity.builder().
                 ingredientId(ingredientDTO.getId()).
-                ingredientName(ingredientDTO.getIngredientName().toLowerCase()).
-                quantity(ingredientDTO.getQuantity()).
+                ingredientName(null != ingredientDTO.getIngredientName() ? ingredientDTO.getIngredientName().toLowerCase() : null).
+                quantity(null != ingredientDTO.getQuantity() ? ingredientDTO.getQuantity() : null).
                 ingredientMeasurement(null != ingredientDTO.getIngredientMeasurements() ? ingredientDTO.getIngredientMeasurements().toLowerCase() : null).
                 recipe(recipeEntity).
                 build();
