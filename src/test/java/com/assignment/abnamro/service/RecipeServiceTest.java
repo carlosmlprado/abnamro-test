@@ -82,31 +82,56 @@ public class RecipeServiceTest {
 
     }
 
-    @Test
-    public void when_updating_new_recipe_then_should_update_with_no_error() {
-
-        var recipeHelper = new RecipeHelper();
-        var ingredientHelper = new IngredientHelper();
-        var recipe = recipeHelper.createMockRecipe();
-        when(recipeRepository.findById(10L)).thenReturn(Optional.of(recipe));
-        when(ingredientRepository.saveAll(ingredientHelper.createIngredientMockList())).thenReturn(ingredientHelper.createIngredientMockList());
-
-        var recipeDTO = new RecipeDTO();
-        recipeDTO.setRecipeId(recipe.getRecipeId());
-
-        recipeDTO.setRecipeName("new recipe name");
-        recipeDTO.setInstructions("new instructions");
-
-        recipeDTO = recipeService.updateRecipe(recipeDTO, 10L);
-
-        verify(recipeRepository, times(1)).save(recipeEntityArgumentCaptor.capture());
-
-        RecipeEntity recipeEntity = recipeEntityArgumentCaptor.getValue();
-
-        assertEquals(recipeEntity.getRecipeName(), recipeDTO.getRecipeName());
-        assertEquals(recipeEntity.getInstructions(), recipeDTO.getInstructions());
-
-    }
+//    @Test
+//    public void when_updating_new_recipe_then_should_update_with_no_error() {
+//
+//        var recipeHelper = new RecipeHelper();
+//        var ingredientHelper = new IngredientHelper();
+//        var recipe = recipeHelper.createMockRecipe();
+//        when(recipeRepository.findById(10L)).thenReturn(Optional.of(recipe));
+//        when(ingredientRepository.saveAll(ingredientHelper.createIngredientMockList())).thenReturn(ingredientHelper.createIngredientMockList());
+//
+//        var recipeDTO = new RecipeDTO();
+//        recipeDTO.setRecipeId(recipe.getRecipeId());
+//
+//        recipeDTO.setRecipeName("new recipe name");
+//        recipeDTO.setInstructions("new instructions");
+//
+//        recipeDTO = recipeService.updateRecipe(recipeDTO, 10L);
+//
+//        verify(recipeRepository, times(1)).save(recipeEntityArgumentCaptor.capture());
+//
+//        RecipeEntity recipeEntity = recipeEntityArgumentCaptor.getValue();
+//
+//        assertEquals(recipeEntity.getRecipeName(), recipeDTO.getRecipeName());
+//        assertEquals(recipeEntity.getInstructions(), recipeDTO.getInstructions());
+//
+//    }
+//
+//    @Test
+//    public void when_creating_new_recipe_then_should_create_with_no_error() {
+//
+//        var recipeHelper = new RecipeHelper();
+//        var ingredientHelper = new IngredientHelper();
+//        var recipe = recipeHelper.createMockRecipe();
+//        when(ingredientRepository.saveAll(ingredientHelper.createIngredientMockList())).thenReturn(ingredientHelper.createIngredientMockList());
+//
+//        var recipeDTO = new RecipeDTO();
+//        recipeDTO.setRecipeId(recipe.getRecipeId());
+//
+//        recipeDTO.setRecipeName("new recipe name");
+//        recipeDTO.setInstructions("new instructions");
+//
+//        recipeDTO = recipeService.updateRecipe(recipeDTO, 10L);
+//
+//        verify(recipeRepository, times(1)).save(recipeEntityArgumentCaptor.capture());
+//
+//        RecipeEntity recipeEntity = recipeEntityArgumentCaptor.getValue();
+//
+//        assertEquals(recipeEntity.getRecipeName(), recipeDTO.getRecipeName());
+//        assertEquals(recipeEntity.getInstructions(), recipeDTO.getInstructions());
+//
+//    }
 
 
 
