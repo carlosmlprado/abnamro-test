@@ -1,0 +1,176 @@
+{
+	"id": "452d4c10-c7a6-419b-8bc7-99de29f5f700",
+	"name": "ABNAMRO ASSIGNMENT COLLECTION",
+	"description": "Collection to test Carlos Prado assignment for ABNAMRO in Nov/22.\r\n",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"9277ef45-dc43-4837-94b7-57fdb87f8903",
+		"0a2c0f34-ad9b-47ac-a0cc-aa775989638f",
+		"942a67e8-ec7d-47f2-9ee8-00c296bc4a9d",
+		"13c977dd-d04f-4a08-adb7-b7cfa1b26de0",
+		"62948a78-0050-4766-9941-2ba0a2be082e",
+		"f9ea301c-8c72-4176-ab0c-416bf7f96813"
+	],
+	"folders_order": [],
+	"protocolProfileBehavior": {},
+	"folders": [],
+	"requests": [
+		{
+			"id": "0a2c0f34-ad9b-47ac-a0cc-aa775989638f",
+			"name": "http://localhost:8080/api/recipes",
+			"url": "http://localhost:8080/api/recipes",
+			"description": "Create a new recipe",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": null,
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\r\n  \"ingredients\": [\r\n    {\r\n      \"ingredientMeasurements\": \"TABLESPOON\",\r\n      \"ingredientName\": \"rice\",\r\n      \"quantity\": 10\r\n    },\r\n    {\r\n      \"ingredientMeasurements\": \"TABLESPOON\",\r\n      \"ingredientName\": \"onions\",\r\n      \"quantity\": 4\r\n    },\r\n{\r\n      \"ingredientMeasurements\": \"CUP\",\r\n      \"ingredientName\": \"carrot\",\r\n      \"quantity\": 12\r\n    }\r\n\r\n  ],\r\n  \"instructions\": \"Cook all together.\",\r\n  \"recipeName\": \"Vegan rice\",\r\n  \"typeOfDiet\": \"VEGAN\",\r\n  \"servingsNumber\": 6\r\n}",
+			"pathVariables": {}
+		},
+		{
+			"id": "13c977dd-d04f-4a08-adb7-b7cfa1b26de0",
+			"name": "http://localhost:8080/api/recipes/1",
+			"url": "http://localhost:8080/api/recipes/1",
+			"description": "delete recipe by recipeId",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": null,
+			"method": "DELETE",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"pathVariables": {}
+		},
+		{
+			"id": "62948a78-0050-4766-9941-2ba0a2be082e",
+			"name": "http://localhost:8080/api/recipes/2",
+			"url": "http://localhost:8080/api/recipes/2",
+			"description": "get rrecipe by recipeId",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": null,
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"pathVariables": {}
+		},
+		{
+			"id": "9277ef45-dc43-4837-94b7-57fdb87f8903",
+			"name": "http://localhost:8080/api/recipes",
+			"url": "http://localhost:8080/api/recipes",
+			"description": "get all recipes",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": null,
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"pathVariables": {}
+		},
+		{
+			"id": "942a67e8-ec7d-47f2-9ee8-00c296bc4a9d",
+			"name": "http://localhost:8080/api/recipes",
+			"url": "http://localhost:8080/api/recipes",
+			"description": "update recipe",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": null,
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\r\n    \"recipeId\": 1,\r\n    \"recipeName\": \"rice\",\r\n    \"typeOfDiet\": \"OMNIVOROUS\",\r\n    \"servingsNumber\": 6,\r\n    \"ingredients\": [\r\n        {\r\n            \"id\": 1,\r\n            \"ingredientName\": \"rice\",\r\n            \"quantity\": 10,\r\n            \"ingredientMeasurements\": \"tablespoon\",\r\n            \"recipeId\": 1\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"ingredientName\": \"onion\",\r\n            \"quantity\": 7,\r\n            \"ingredientMeasurements\": \"cup\",\r\n            \"recipeId\": 1\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"ingredientName\": \"strawberry\",\r\n            \"quantity\": 12,\r\n            \"ingredientMeasurements\": \"spoon\",\r\n            \"recipeId\": 1\r\n        }\r\n    ],\r\n    \"instructions\": \"cook all mixed.\"\r\n}",
+			"pathVariables": {}
+		},
+		{
+			"id": "f9ea301c-8c72-4176-ab0c-416bf7f96813",
+			"name": "http://localhost:8080/api/recipes/filter?textSearch=cook&typeOfDiet=VEGAN&servingsNumber=6&includedIngredient=rice&excludedIngredient=bacon&=",
+			"url": "http://localhost:8080/api/recipes/filter?textSearch=cook&typeOfDiet=VEGAN&servingsNumber=6&includedIngredient=rice&excludedIngredient=bacon&=",
+			"description": "get recipes by filters",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": null,
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "textSearch",
+					"value": "cook",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "typeOfDiet",
+					"value": "VEGAN",
+					"equals": true,
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "servingsNumber",
+					"value": "6",
+					"equals": true,
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "includedIngredient",
+					"value": "rice",
+					"equals": true,
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "excludedIngredient",
+					"value": "bacon",
+					"equals": true,
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "",
+					"value": "",
+					"equals": true,
+					"description": null,
+					"enabled": true
+				}
+			],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"pathVariables": {}
+		}
+	]
+}
