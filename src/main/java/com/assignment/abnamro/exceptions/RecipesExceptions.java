@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @RestControllerAdvice
@@ -18,7 +19,7 @@ public class RecipesExceptions {
     public ErrorMessage resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(
                 HttpStatus.NOT_FOUND.value(),
-                new Date(),
+                Calendar.getInstance().getTime(),
                 ex.getMessage(),
                 "Recipe not found.");
 

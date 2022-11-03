@@ -1,136 +1,111 @@
 package com.assignment.abnamro.controller;
 
-import com.assignment.abnamro.dto.RecipeFilterDTO;
-import com.assignment.abnamro.exceptions.ResourceNotFoundException;
+
 import com.assignment.abnamro.helpers.RecipeHelper;
+import com.assignment.abnamro.repository.IngredientRepository;
 import com.assignment.abnamro.repository.RecipeRepository;
 import com.assignment.abnamro.service.RecipeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.jayway.restassured.RestAssured;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.restassured.response.Response;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
+import java.util.Optional;
+
+import static com.jayway.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.equalTo;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+class RecipeControllerTest extends Testt {
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(RecipeController.class)
-class RecipeControllerTest {
-
-    public static final String BASE_URL = "http://localhost:8080/api/recipes";
-
-    @Autowired
-    private MockMvc mockMvc;
+    @LocalServerPort
+    private int port;
 
     @MockBean
     private RecipeRepository recipeRepository;
 
     @MockBean
-    RecipeService recipeService;
+    private IngredientRepository ingredientRepository;
+
+    @MockBean
+    private RecipeService recipeService;
+
+    @Before
+    public void setUp() throws Exception {
+        RestAssured.port = port;
+    }
 
     @Test
-    void when_creating_recipe_then_should_return_created_recipe() throws Exception {
+    public void when_getting_all_recipes_should_return_ok_status_code() {
+        given().port(port).when().get("/api/recipes").then().statusCode(200);
+    }
+
+    @Test
+    public void when_getting_all_recipes_with_given_filter_should_return_ok_status_code() {
+        given().port(port).when().get("/api/recipes/filter?textSearch=cook&typeOfDiet=VEGAN&servingsNumber=6&includedIngredient=rice&excludedIngredient=bacon").then().statusCode(200);
+    }
+
+    @Test
+    public void when_getting_recipe_by_existing_id_should_return_ok_status_code() {
+        var recipeHelper = new RecipeHelper();
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipeHelper.createMockRecipe()));
+        given().port(port).when().get("/api/recipes/1").then().statusCode(200);
+    }
+
+    @Test
+    public void when_deleting_recipe_by_existing_id_should_return_no_content() {
+        var recipeHelper = new RecipeHelper();
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipeHelper.createMockRecipe()));
+        given().port(port).when().delete("/api/recipes/1").then().statusCode(204);
+    }
+
+    @Test
+    public void when_creating_new_recipe_then_should_return_created_status_code() throws JsonProcessingException {
         var recipeHelper = new RecipeHelper();
         when(recipeService.createRecipe(recipeHelper.createMockRecipeDTO())).thenReturn(recipeHelper.createMockRecipeDTO());
 
         ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
+        String requestBody = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
 
-        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL)
-                        .content(jsonContent)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)).andExpect(status().is(HttpStatus.CREATED.value())).
-                andExpect(jsonPath("$.recipeName").value("Feijoada")).
-                andExpect(jsonPath("$.instructions").value("Dummy instruction"));
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/api/recipes")
+                .then()
+                .extract().response();
 
+        response.then().statusCode(201).assertThat().body("recipeName",
+                equalTo("Feijoada"));
     }
 
     @Test
-    void when_updating_recipe_then_should_return_updated_recipe() throws Exception {
+    public void when_updating_recipe_with_existing_recipeId_then_should_return_ok_status_code() throws JsonProcessingException {
         var recipeHelper = new RecipeHelper();
-        var recipeDTO = recipeHelper.createMockRecipeDTO();
-        when(recipeService.updateRecipe(recipeHelper.createMockRecipeDTO(), 1L)).thenReturn(recipeDTO);
-
-        recipeDTO.setRecipeName("new recipe name");
-        recipeDTO.setInstructions("new instructions");
+        when(recipeService.createRecipe(recipeHelper.createMockRecipeDTO())).thenReturn(recipeHelper.createMockRecipeDTO());
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipeHelper.createMockRecipe()));
 
         ObjectMapper mapper = new ObjectMapper();
-        String jsonContent = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
+        String requestBody = mapper.writeValueAsString(recipeHelper.createMockRecipeDTO());
 
-        mockMvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1")
-                        .content(jsonContent)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)).
-                andExpect(status().is(HttpStatus.OK.value())).
-                andExpect(jsonPath("$.recipeName").value("new recipe name")).
-                andExpect(jsonPath("$.instructions").value("new instructions"));
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .put("/api/recipes/1")
+                .then()
+                .extract().response();
+
+        response.then().statusCode(200);
     }
 
-    @Test
-    void when_getting_non_existing_recipeId_then_should_return_not_found() throws Exception {
-        var recipeHelper = new RecipeHelper();
-        when(recipeService.getRecipeById(11L)).thenReturn(recipeHelper.createMockRecipeDTO());
-
-        MockHttpServletRequestBuilder request = get(BASE_URL + "/10");
-
-        mockMvc.perform(request).andExpect(jsonPath("[0].recipeId").doesNotExist());
-
-    }
-
-    @Test
-    void when_getting_existing_recipeId_then_should_return_recipe() throws Exception {
-        var recipeHelper = new RecipeHelper();
-        when(recipeService.getRecipeById(1L)).thenReturn(recipeHelper.createMockRecipeDTO());
-
-        MockHttpServletRequestBuilder request = get(BASE_URL + "/1");
-
-        mockMvc.perform(request).
-                andExpect(jsonPath("$.recipeId").value(1L)).
-                andExpect(status().isOk());
-    }
-
-    @Test
-    void when_deleting_existing_recipe_then_should_return_no_content() throws Exception {
-        MockHttpServletRequestBuilder request = delete(BASE_URL + "/{recipeId}", 1L);
-
-        mockMvc.perform(request)
-                .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
-    }
-
-    @Test
-    void when_deleting_non_existing_recipe_then_should_throw_not_found_exception() throws Exception {
-        doThrow(ResourceNotFoundException.class).when(recipeService).deleteRecipeById(anyLong());
-
-        mockMvc.perform(MockMvcRequestBuilders.delete(BASE_URL + "/1")).
-                andExpect(status().is(HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Test
-    void when_filtering_recipes_then_should_return_ok_response() throws Exception {
-        var recipeFilterDTO = new RecipeFilterDTO();
-        recipeFilterDTO.setInstructionsSearch("instructions");
-        var recipeHelper = new RecipeHelper();
-        when(recipeService.getFilteredRecipes(recipeFilterDTO)).thenReturn(recipeHelper.createMockRecipeListDTO());
-
-        MockHttpServletRequestBuilder request = get(BASE_URL + "/filter?textSearch=cook");
-
-        mockMvc.perform(request).
-                andExpect(status().isOk());
-
-    }
 }
