@@ -5,7 +5,7 @@ import com.assignment.abnamro.dto.RecipeDTO;
 import com.assignment.abnamro.dto.RecipeFilterDTO;
 import com.assignment.abnamro.entity.IngredientEntity;
 import com.assignment.abnamro.entity.RecipeEntity;
-import com.assignment.abnamro.exceptions.RecipesExceptions;
+import com.assignment.abnamro.exceptions.ResourceNotFoundException;
 import com.assignment.abnamro.repository.IngredientRepository;
 import com.assignment.abnamro.repository.RecipeRepository;
 import com.assignment.abnamro.repository.specification.RecipeSpecification;
@@ -74,17 +74,17 @@ public class RecipeService {
     }
 
     @Transactional
-    public void deleteRecipe(Long recipeId) {
+    public void deleteRecipeById(Long recipeId) {
         var recipeEntity = checkIfRecipeExists(recipeId);
         log.info("Delete ingredients first then recipe");
-        ingredientRepository.deleteIngredientByRecipeId(recipeId);
+        ingredientRepository.deleteByRecipe(recipeEntity);
         recipeRepository.delete(recipeEntity);
     }
 
     @Transactional
     private RecipeEntity checkIfRecipeExists(Long recipeId) {
         return recipeRepository.findById(recipeId).stream().findFirst()
-                .orElseThrow(() -> new RecipesExceptions("Recipe not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe not found with id: " + recipeId));
     }
 
     @Transactional(readOnly = true)
@@ -97,7 +97,7 @@ public class RecipeService {
         Page<RecipeEntity> page = recipeRepository.findAll(recipeEntitySpecification, pageable);
         var recipeDTO = new RecipeDTO();
 
-        var listRecipe = page.getContent().stream().map(recipeDTO::toDTO).collect(Collectors.toList());
+        var listRecipe = page.getContent();
 
         log.info("check if contains excluded ingredient in the recipe");
         if (!page.getContent().isEmpty() && recipeFilterDTO.getExcludedIngredient() != null) {
@@ -106,19 +106,20 @@ public class RecipeService {
         }
 
         log.debug("Return list after filtering: {}", listRecipe);
-        return listRecipe;
+        return listRecipe.stream().map(recipeDTO::toDTO).collect(Collectors.toList());
     }
 
-    private void checkRecipesWithoutExcludedIngredients(List<RecipeDTO> recipeDTOS, List<String> excludedIngredients) {
+    private void checkRecipesWithoutExcludedIngredients(List<RecipeEntity> recipeEntities, List<String> excludedIngredients) {
 
-        Set<Long> listWithRecipeIds = recipeDTOS.stream().map(RecipeDTO::getRecipeId).collect(Collectors.toSet());
+        Set<Long> listWithRecipeIds = recipeEntities.stream().map(RecipeEntity::getRecipeId).collect(Collectors.toSet());
 
         for (Long i : listWithRecipeIds) {
-            List<IngredientEntity> list = ingredientRepository.getIngredientByNameAndRecipeId(i, excludedIngredients);
+            var recipeEntity = recipeEntities.stream().filter(c -> c.getRecipeId().equals(i)).findAny().orElse(null);
+            List<IngredientEntity> list = ingredientRepository.findByRecipeAndIngredientNameIn(recipeEntity, excludedIngredients);
 
             if (list.size() > 0) {
-                Predicate<RecipeDTO> predicate = r -> Objects.equals(r.getRecipeId(), i);
-                recipeDTOS.removeIf(predicate);
+                Predicate<RecipeEntity> predicate = r -> Objects.equals(r.getRecipeId(), i);
+                recipeEntities.removeIf(predicate);
             }
 
         }

@@ -3,7 +3,7 @@ package com.assignment.abnamro.service;
 import com.assignment.abnamro.dto.RecipeDTO;
 import com.assignment.abnamro.dto.RecipeFilterDTO;
 import com.assignment.abnamro.entity.RecipeEntity;
-import com.assignment.abnamro.exceptions.RecipesExceptions;
+import com.assignment.abnamro.exceptions.ResourceNotFoundException;
 import com.assignment.abnamro.helpers.IngredientHelper;
 import com.assignment.abnamro.helpers.RecipeHelper;
 import com.assignment.abnamro.repository.IngredientRepository;
@@ -76,7 +76,7 @@ public class RecipeServiceTest {
     @Test
     public void when_getting_non_existing_recipeId_then_return_not_found_exception() {
 
-        assertThrows(RecipesExceptions.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             recipeService.getRecipeById(10L);
         });
 
@@ -131,8 +131,8 @@ public class RecipeServiceTest {
     @Test
     public void when_delete_non_existing_recipeId_then_return_not_found_exception() {
 
-        assertThrows(RecipesExceptions.class, () -> {
-            recipeService.deleteRecipe(9L);
+        assertThrows(ResourceNotFoundException.class, () -> {
+            recipeService.deleteRecipeById(9L);
         });
     }
 
@@ -144,7 +144,7 @@ public class RecipeServiceTest {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
         var ingredientHelper = new IngredientHelper();
         when(recipeRepository.findAll(ArgumentMatchers.<Specification<RecipeEntity>>any(), eq(pageable))).thenReturn(createPage());
-        when(ingredientRepository.getIngredientByNameAndRecipeId(1L,excludedIngredient)).thenReturn(Arrays.asList(ingredientHelper.createIngredientMock()));
+        when(ingredientRepository.findByRecipeAndIngredientNameIn(any(),excludedIngredient)).thenReturn(Arrays.asList(ingredientHelper.createIngredientMock()));
 
         List<RecipeDTO> recipeListDTO = recipeService.getFilteredRecipes(recipeFilterDTO);
 

@@ -2,6 +2,10 @@ Assignment for ABN AMRO backend developer test on November/22.
 
 APi was made with Spring Boot, Java 11, Jpa and H2 in memory database.
 It runs with docker and documentation is made with Swagger.
+There are 2 environments, which are dev and prod.
+You can change between them by adding the command below in VM Options:
+[-Dspring.profiles.active=prod]
+Standard is dev.
 
 Swagger documentation AFTER RUNNING THE APPLICATION: http://localhost:8080/swagger-ui.html#/
 
@@ -17,13 +21,13 @@ Get all recipes.
 Get recipe by existing ID.
 
 @GetMapping("/filter")
-Get recipe by existing ID.
+Get recipe by given filters
 
 @PostMapping
 Create new recipe.
 
-@PutMapping
-Update recipe.
+@PutMapping({recipeId})
+Update recipe by recipeId
 
 @DeleteMapping("/{recipeId}")
 Delete recipe by recipeId.
@@ -48,4 +52,6 @@ in postman-collection.json file.
 
 You can also execute queries through H2 UI.
 H2:[http://localhost:8080/h2/]
-JDBC URL: jdbc:h2:file:~/store-crud
+JDBC URL: jdbc:h2:file:~/abn-dev  -> for dev environment
+JDBC URL: jdbc:h2:file:~/abn-prod  -> for prod environment
+Passwords are in properties file.

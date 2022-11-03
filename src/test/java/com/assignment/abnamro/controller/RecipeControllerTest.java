@@ -1,7 +1,7 @@
 package com.assignment.abnamro.controller;
 
 import com.assignment.abnamro.dto.RecipeFilterDTO;
-import com.assignment.abnamro.exceptions.RecipesExceptions;
+import com.assignment.abnamro.exceptions.ResourceNotFoundException;
 import com.assignment.abnamro.helpers.RecipeHelper;
 import com.assignment.abnamro.repository.RecipeRepository;
 import com.assignment.abnamro.service.RecipeService;
@@ -17,8 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -116,7 +114,7 @@ class RecipeControllerTest {
 
     @Test
     void when_deleting_non_existing_recipe_then_should_throw_not_found_exception() throws Exception {
-        doThrow(RecipesExceptions.class).when(recipeService).deleteRecipe(anyLong());
+        doThrow(ResourceNotFoundException.class).when(recipeService).deleteRecipeById(anyLong());
 
         mockMvc.perform(MockMvcRequestBuilders.delete(BASE_URL + "/1")).
                 andExpect(status().is(HttpStatus.NOT_FOUND.value()));

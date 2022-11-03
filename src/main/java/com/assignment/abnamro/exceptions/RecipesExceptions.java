@@ -1,14 +1,27 @@
 package com.assignment.abnamro.exceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-@AllArgsConstructor
-@NoArgsConstructor
-public class RecipesExceptions extends RuntimeException {
+import java.util.Date;
 
-    private String message;
+@RestControllerAdvice
+public class RecipesExceptions {
+
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessage resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(
+                HttpStatus.NOT_FOUND.value(),
+                new Date(),
+                ex.getMessage(),
+                "Recipe not found.");
+
+        return message;
+    }
 }
