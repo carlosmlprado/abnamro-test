@@ -23,7 +23,7 @@ public class RecipeController {
 
     private RecipeService recipesService;
 
-    @ApiOperation(value = "Show all recipes")
+    @ApiOperation(value = "Get all recipes")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Recipes returned."),
             @ApiResponse(code = 500, message = "Exception from server"),

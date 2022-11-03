@@ -1,13 +1,13 @@
 Assignment for ABN AMRO backend developer test on November/22.
 
 APi was made with Spring Boot, Java 11, Jpa and H2 in memory database.
-It runs with docker and documentation is made with Swagger.
+It runs with docker and API doc is made with Swagger.
 There are 2 environments, which are dev and prod.
 You can change between them by adding the command below in VM Options:
 [-Dspring.profiles.active=prod]
 Standard is dev.
 
-Swagger documentation AFTER RUNNING THE APPLICATION: http://localhost:8080/swagger-ui.html#/
+Swagger API documentation AFTER RUNNING THE APPLICATION: [http://localhost:8080/swagger-ui.html#/]
 
 Contains 1 Controller, which is:
 
@@ -18,7 +18,7 @@ With the methods:
 Get all recipes.
 
 @GetMapping("/{recipeId}")
-Get recipe by existing ID.
+Get recipe by recipeId.
 
 @GetMapping("/filter")
 Get recipe by given filters
