@@ -1,0 +1,104 @@
+{
+  "ingredients": [
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "bean",
+      "quantity": 10
+    },
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "onions",
+      "quantity": 4
+    },
+    {
+      "ingredientMeasurements": "CUP",
+      "ingredientName": "carrot",
+      "quantity": 12
+    }
+
+  ],
+  "instructions": "Fry potato and. Fry bacon and add cheddar later.",
+  "recipeName": "VEGETARIAN feijoada",
+  "typeOfDiet": "VEGETARIAN",
+  "servingsNumber": 5
+}
+_____________________________________________________________________________
+{
+  "ingredients": [
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "sausagee",
+      "quantity": 10
+    },
+    {
+      "ingredientMeasurements": "UNITY",
+      "ingredientName": "bread",
+      "quantity": 9
+    },
+    {
+      "ingredientMeasurements": "SLICE",
+      "ingredientName": "bacon",
+      "quantity": 20
+    }
+
+  ],
+  "instructions": "Cook sausage, fry bacon and put all in the bread.",
+  "recipeName": "Simple hot dog",
+  "typeOfDiet": "OMNIVOROUS",
+  "servingsNumber": 9
+}
+______________________________________________________
+{
+  "ingredients": [
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "sausagee",
+      "quantity": 10
+    },
+    {
+      "ingredientMeasurements": "UNITY",
+      "ingredientName": "bread",
+      "quantity": 9
+    },
+    {
+      "ingredientMeasurements": "SLICE",
+      "ingredientName": "bacon",
+      "quantity": 20
+    },
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "ketchup",
+      "quantity": 10
+    }
+
+  ],
+  "instructions": "Cook sausage, fry bacon and put all in the bread. Complete with ketchup",
+  "recipeName": "Comnplete hot dog",
+  "typeOfDiet": "OMNIVOROUS",
+  "servingsNumber": 9
+}
+______________________________________________________
+{
+  "ingredients": [
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "rice",
+      "quantity": 10
+    },
+    {
+      "ingredientMeasurements": "TABLESPOON",
+      "ingredientName": "onions",
+      "quantity": 4
+    },
+    {
+      "ingredientMeasurements": "CUP",
+      "ingredientName": "carrot",
+      "quantity": 12
+    }
+
+  ],
+  "instructions": "cook all together.",
+  "recipeName": "Vegan rice",
+  "typeOfDiet": "VEGAN",
+  "servingsNumber": 6
+}
