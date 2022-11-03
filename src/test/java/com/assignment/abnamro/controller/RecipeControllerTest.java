@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-class RecipeControllerTest extends Testt {
+class RecipeControllerTest {
 
     @LocalServerPort
     private int port;
