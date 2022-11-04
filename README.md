@@ -49,6 +49,8 @@ in postman-collection.json file.
     [docker build -t recipe-api .]
   - run dockerfile
     [docker run -dp8080:8080 recipe-api]
+  - You can also choose the profile you want to run: 
+    [docker run -e "SPRING_PROFILES_ACTIVE=<choose-profile>" -p8080:8080 recipe-api:latest]
 
 You can also execute queries through H2 UI.
 H2:[http://localhost:8080/h2/]
